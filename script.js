@@ -11,7 +11,7 @@ function arenaSweep() {
             }
         }
 
-        const row = arena.splice(y, 1)[0].fill(0); // Corrected the fill method usage
+        const row = arena.splice(y, 1)[0].fill(0);
         arena.unshift(row);
         ++y;
 
@@ -35,7 +35,7 @@ function collide(arena, player) {
 }
 
 function createMatrix(w, h) {
-    const matrix = []; // Initialize the matrix
+    const matrix = [];
     while (h--) {
         matrix.push(new Array(w).fill(0));
     }
