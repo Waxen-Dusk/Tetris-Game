@@ -102,8 +102,8 @@ function drawMatrix(matrix, offset) {
             if (value!== 0) {
                 context.fillStyle = colors[value];
                 context.fillRect(x + offset.x,
-                                 y + offset.y,
-                                 1, 1);
+                                 y + offset.y, 
+                                 1, 1)  // No semicolon here
             }
         });
     });
