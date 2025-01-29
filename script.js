@@ -11,7 +11,7 @@ function arenaSweep() {
             }
         }
 
-        const row = arena.splice(y, 1).fill(0);
+        const row = arena.splice(y, 1)[0].fill(0);
         arena.unshift(row);
         ++y;
 
@@ -24,9 +24,9 @@ function collide(arena, player) {
     const [m, o] = [player.matrix, player.pos];
     for (let y = 0; y < m.length; ++y) {
         for (let x = 0; x < m[y].length; ++x) {
-            if (m[y][x]!== 0 &&
-               (arena[y + o.y] &&
-                arena[y + o.y][x + o.x])!== 0) {
+            if (m[y][x] !== 0 &&
+                (arena[y + o.y] &&
+                 arena[y + o.y][x + o.x]) !== 0) {
                 return true;
             }
         }
@@ -35,7 +35,7 @@ function collide(arena, player) {
 }
 
 function createMatrix(w, h) {
-    const matrix =;
+    const matrix = [];
     while (h--) {
         matrix.push(new Array(w).fill(0));
     }
@@ -45,45 +45,45 @@ function createMatrix(w, h) {
 function createPiece(type) {
     if (type === 'T') {
         return [
-         ,
-         ,
-         ,
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 1, 0],
         ];
     } else if (type === 'O') {
         return [
-         ,
-         ,
+            [2, 2],
+            [2, 2],
         ];
     } else if (type === 'L') {
         return [
-         ,
-         ,
-         ,
+            [0, 3, 0],
+            [0, 3, 0],
+            [0, 3, 3],
         ];
     } else if (type === 'J') {
         return [
-         ,
-         ,
-         ,
+            [0, 4, 0],
+            [0, 4, 0],
+            [4, 4, 0],
         ];
     } else if (type === 'I') {
         return [
-         ,
-         ,
-         ,
-         ,
+            [0, 5, 0, 0],
+            [0, 5, 0, 0],
+            [0, 5, 0, 0],
+            [0, 5, 0, 0],
         ];
     } else if (type === 'S') {
         return [
-         ,
-         ,
-         ,
+            [0, 6, 6],
+            [6, 6, 0],
+            [0, 0, 0],
         ];
     } else if (type === 'Z') {
         return [
-         ,
-         ,
-         ,
+            [7, 7, 0],
+            [0, 7, 7],
+            [0, 0, 0],
         ];
     }
 }
@@ -99,11 +99,11 @@ function draw() {
 function drawMatrix(matrix, offset) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
-            if (value!== 0) {
+            if (value !== 0) {
                 context.fillStyle = colors[value];
                 context.fillRect(x + offset.x,
-                                 y + offset.y, 
-                                 1, 1)  // No semicolon here
+                                 y + offset.y,
+                                 1, 1);
             }
         });
     });
@@ -112,7 +112,7 @@ function drawMatrix(matrix, offset) {
 function merge(arena, player) {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
-            if (value!== 0) {
+            if (value !== 0) {
                 arena[y + player.pos.y][x + player.pos.x] = value;
             }
         });
@@ -142,8 +142,8 @@ function playerReset() {
     const pieces = 'ILJOTSZ';
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
-    player.pos.x = (arena.length / 2 | 0) -
-                   (player.matrix.length / 2 | 0);
+    player.pos.x = (arena[0].length / 2 | 0) -
+                   (player.matrix[0].length / 2 | 0);
     if (collide(arena, player)) {
         arena.forEach(row => row.fill(0));
         player.score = 0;
@@ -157,7 +157,7 @@ function playerRotate(dir) {
     rotate(player.matrix, dir);
     while (collide(arena, player)) {
         player.pos.x += offset;
-        offset = -(offset + (offset > 0? 1: -1));
+        offset = -(offset + (offset > 0 ? 1 : -1));
         if (offset > player.matrix.length) {
             rotate(player.matrix, -dir);
             player.pos.x = pos;
